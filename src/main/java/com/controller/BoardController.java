@@ -19,8 +19,8 @@ public class BoardController{
     @GetMapping("/")
     public String list(Model model){
       List<Board> boards = boardRepository.findAllByOrderByCreatedAtDesc();
-      model.addAttributes("boards",boards);
-      return("board/list");
+      model.addAttribute("boards",boards);
+      return "board/list";
     } 
     @GetMapping("/board/write")
     public String writePost(){
@@ -28,16 +28,15 @@ public class BoardController{
     }
     @PostMapping("/board/write")
     public String write(Board board){
-        boardRepository.save(board)
+        boardRepository.save(board);
         return "redirect:/";
     }
-    @GetMapping("/board/{id}"){
-        public String showPost(@PathVariable("id") UUID id, Model model){
-            Board board = boardRepository.findById(id)
-                    .orElseThrow(()-> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
-        }
+    @GetMapping("/board/{id}")
+    public String showPost(@PathVariable("id") UUID id, Model model){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 접근이긔"));
         model.addAttribute("board",board);
-        return "/board/post";
+        return "board/post";
     }
 
 

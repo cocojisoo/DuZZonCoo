@@ -1,9 +1,22 @@
+package com.example.DuZZonCoo.domain;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Board {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -24,10 +37,11 @@ public class Board {
     @NotBlank(message = "비밀번호를 입력해주시긔")
     private String password;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
-
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
 
