@@ -34,7 +34,7 @@ public class BoardController{
     @GetMapping("/board/{id}"){
         public String showPost(@PathVariable("id") UUID id, Model model){
             Board board = boardRepository.findById(id)
-                    .orElseThrow(()-> new IllegalArgumentException("잘못된 접근이긔"));
+                    .orElseThrow(()-> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
         }
         model.addAttribute("board",board);
         return "/board/post";
