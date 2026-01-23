@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기 - DuZZonCoo</title>
+</head>
+<body>
+    <h1>새 글 작성</h1>
+    <hr>
+    <form th:action="@{/board/write}" method="post">
+        <div>
+            <label>제목: </label>
+            <input type="text" name="title" required placeholder="제목을 입력해주시긔">
+        </div>
+        <div>
+            <label>작성자: </label>
+            <input type="text" name="writer" required placeholder="익명(숫자) 가능">
+        </div>
+        <div>
+            <label>비밀번호: </label>
+            <input type="password" name="password" required placeholder="수정/삭제 시 필요하긔">
+        </div>
+        <div>
+            <label>내용: </label><br>
+            <textarea name="content" rows="10" cols="50" placeholder="내용을 입력해주시긔"></textarea>
+        </div>
+        <hr>
+        <button type="submit">등록하기</button>
+        <a th:href="@{/}">취소</a>
+    </form>
+</body>
+</html>
