@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 삭제 - DuZZonCoo</title>
+</head>
+<body>
+    <h1>진짜 삭제할거긔?</h1>
+    <p>삭제된 게시글은 복구할 수 없긔. 신중히 결정해주시긔</p>
+    <hr>
+    
+    <form th:action="@{/board/{id}/delete(id=${board.id})}" method="post">
+        <div style="margin-bottom: 10px;">
+            <label>비밀번호 입력: </label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" style="background-color: red; color: white;">확인(삭제)</button>
+        <a th:href="@{/board/{id}(id=${board.id})}">취소(돌아가기)</a>
+    </form>
+</body>
+</html>

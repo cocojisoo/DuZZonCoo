@@ -2,6 +2,7 @@ package com.example.DuZZonCoo.controller;
 
 import com.example.DuZZonCoo.domain.Board;
 import com.example.DuZZonCoo.domain.BoardRepository;
+import com.example.DuZZonCoo.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -34,10 +35,50 @@ public class BoardController{
     @GetMapping("/board/{id}")
     public String showPost(@PathVariable("id") UUID id, Model model){
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 접근이긔"));
+                .orElseThrow(() -> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
         model.addAttribute("board",board);
         return "board/post";
     }
 
-
+    @GetMapping("/board/{id}/delete")
+    public String deleteForm(@PathVariable("id") UUID id, Model model) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        model.addAttribute("board", board);
+        return "board/delete";
 }
+
+    @PostMapping("/board/{id}/delete")
+    public String deletePost(@PathVariable("id") UUID id, @RequestParam("password") String inputPassword){
+        Board board = boardRepository.findById(id).
+              orElseThrow(() -> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
+        if(!board.getPassword().equals(inputPassword)){
+            throw new IllegalArgumentException(ErrorCode.INVALID_PASSWORD.message());
+        }
+        boardRepository.delete(board);
+        
+        return "redirect:/";
+    }
+    @GetMapping("/board/{id}/edit")
+    public String editPost(@PathVariable("id") UUID id, Model model){
+        Board board = boardRepository.findById(id)
+              .orElseThrow(() -> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
+        model.addAttribute("board", board);
+        return "board/edit";
+    }
+    @PostMapping("/board/{id}/edit")
+    public String editPost(@PathVariable("id") UUID id,
+                           @RequestParam("password") String inputPassword,
+                           Board editedPost){
+        Board board = boardRepository.findById(id)
+                      .orElseThrow(() -> new IllegalArgumentException(ErrorCode.WRONG_UUID_REQUEST.message()));
+        if(!board.getPassword().equals(inputPassword)){
+            throw new IllegalArgumentException(ErrorCode.INVALID_PASSWORD.message());
+        }
+        board.setTitle(editedPost.getTitle());
+        board.setContent(editedPost.getContent());
+
+        boardRepository.save(board);
+
+        return "redirect:/post/" + id;
+        }
+    }

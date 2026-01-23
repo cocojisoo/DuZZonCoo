@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정 - DuZZonCoo</title>
+</head>
+<body>
+    <h1>게시글 수정</h1>
+    <hr>
+    <form th:action="@{/board/{id}/edit(id=${board.id})}" method="post">
+        <div>
+            <label>제목: </label>
+            <input type="text" name="title" th:value="${board.title}" required>
+        </div>
+        <div>
+            <label>작성자: </label>
+            <input type="text" name="writer" th:value="${board.writer}" readonly>
+        </div>
+        <div>
+            <label>비밀번호 확인: </label>
+            <input type="password" name="password" required placeholder="비밀번호를 입력해주시긔">
+            <p style="color: gray; font-size: 0.8em;">* 글 작성 시 설정한 비밀번호가 일치해야 수정되긔</p>
+        </div>
+        <div>
+            <label>내용: </label><br>
+            <textarea name="content" rows="10" cols="50" th:text="${board.content}"></textarea>
+        </div>
+        <hr>
+        <button type="submit">수정 완료</button>
+        <a th:href="@{/board/{id}(id=${board.id})}">취소</a>
+    </form>
+</body>
+</html>
